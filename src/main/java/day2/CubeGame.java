@@ -39,14 +39,13 @@ public class CubeGame {
     }
 
     public int getPowerOfCubes(String input) {
-        Map<String, Integer> cubeMap = new HashMap<>() {{
+        Map<String, Integer> fewestCubeMap = new HashMap<>() {{
             put("red", 1);
             put("green", 1);
             put("blue", 1);
         }};
 
         String[] split = input.split(":");
-        String gameId = split[0].replace("Game ", "");
         String[] games = split[1].trim().split(";");
         for (String game : games) {
             String[] cubes = game.trim().split(",");
@@ -54,12 +53,16 @@ public class CubeGame {
                 for (String color : colors) {
                     if (cube.contains(color)) {
                         int numberOfCube = Integer.parseInt(cube.replace(color, "").trim());
-                        Integer max = Math.max(cubeMap.get(color), numberOfCube);
-                        cubeMap.put(color, max);
+                        Integer max = Math.max(fewestCubeMap.get(color), numberOfCube);
+                        fewestCubeMap.put(color, max);
                     }
                 }
             }
         }
-        return cubeMap.get("red") * cubeMap.get("green") * cubeMap.get("blue");
+        int result = 1;
+        for (String color : colors) {
+            result *= fewestCubeMap.get(color);
+        }
+        return result;
     }
 }
