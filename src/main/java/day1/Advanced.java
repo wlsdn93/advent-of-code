@@ -8,22 +8,21 @@ public class Advanced implements Calibrator {
 
     @Override
     public int calibrate(String input) {
-        List<Integer> A = new ArrayList<>();
+        List<Integer> list = new ArrayList<>();
         for (int i = 0; i < input.length(); i++) {
             if (Character.isDigit(input.charAt(i))) {
                 int num = Character.getNumericValue(input.charAt(i));
-                A.add(num);
+                list.add(num);
             } else {
                 for (int j = 1; j < 10; j++) {
                     if (input.substring(i).startsWith(NUMBER_WORDS[j])) {
-                        A.add(j);
+                        list.add(j);
                         break;
                     }
                 }
             }
         }
-        int size = A.size();
-        return A.get(0) * 10 + A.get(size - 1);
+        int size = list.size();
+        return list.get(0) * 10 + list.get(size - 1);
     }
-
 }
