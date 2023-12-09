@@ -10,13 +10,13 @@ public class CubeGame {
     private static final int GREEN_LIMIT = 13;
     private static final int BLUE_LIMIT = 14;
     private static final List<String> colors = List.of("red", "blue", "green");
-    private static final Map<String, Integer> map = new HashMap<>(){{
+    private static final Map<String, Integer> map = new HashMap<>() {{
         put("red", RED_LIMIT);
         put("green", GREEN_LIMIT);
         put("blue", BLUE_LIMIT);
     }};
 
-    public int getPossibleGameId(String input) {
+    public int getFeasibleGameId(String input) {
         String[] split = input.split(":");
         String gameId = split[0].replace("Game ", "");
         String[] games = split[1].trim().split(";");
@@ -39,7 +39,7 @@ public class CubeGame {
     }
 
     public int getPowerOfCubes(String input) {
-        Map<String, Integer> cubeMap = new HashMap<>(){{
+        Map<String, Integer> cubeMap = new HashMap<>() {{
             put("red", 1);
             put("green", 1);
             put("blue", 1);
