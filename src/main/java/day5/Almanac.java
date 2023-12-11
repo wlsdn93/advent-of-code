@@ -20,6 +20,7 @@ public class Almanac {
 
     private static Map<ALMANAC_KEY, List<AlmanacMap>> map = new HashMap<>();
     private static List<Long> seeds;
+    private static List<Seed> seedList = new ArrayList<>();
 
     public static void main(String[] args) {
         // seed, map 을 등록
@@ -31,10 +32,24 @@ public class Almanac {
             long source = seed;
             for (ALMANAC_KEY key : values) {
                 List<AlmanacMap> almanacMapList = Almanac.map.get(key);
-                long destination  = getDestination(almanacMapList, source);
-                source = destination;
+                source = getDestination(almanacMapList, source);
             }
             min = Math.min(min, source);
+        }
+        System.out.println(min);
+
+        min = Long.MAX_VALUE;
+        for (Seed seed : seedList) {
+            Long start = seed.getStart();
+            Long range = seed.getRange();
+            for (long i = start; i < start + range; i++) {
+                long source = i;
+                for (ALMANAC_KEY key : values) {
+                    List<AlmanacMap> almanacMapList = Almanac.map.get(key);
+                    source = getDestination(almanacMapList, source);
+                }
+                min = Math.min(min, source);
+            }
         }
         System.out.println(min);
     }
@@ -81,12 +96,36 @@ public class Almanac {
         }
     }
 
+    static class Seed {
+        Long start;
+        Long range;
+
+        public Seed(Long start, Long range) {
+            this.start = start;
+            this.range = range;
+        }
+
+        public Long getStart() {
+            return start;
+        }
+
+        public Long getRange() {
+            return range;
+        }
+    }
+
     private static void init() {
         try (var lines = Files.lines(Path.of(SEED))) {
             seeds = Arrays.stream(lines.findFirst().get().split(" "))
                     .mapToLong(Long::parseLong)
                     .boxed()
                     .toList();
+            int size = seeds.size();
+            for (int i = 0; i < size - 1; i += 2) {
+                Long start = seeds.get(i);
+                Long range = seeds.get(i + 1);
+                seedList.add(new Seed(start, range));
+            }
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
